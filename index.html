@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BOGA LAMPS · Amor por los detalles</title>
+  <meta name="description" content="Lámparas e iluminación para interiores y exteriores, y decoración con amor por los detalles." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ---------- Brand tokens (derived from brand_assets) ---------- */
+    :root {
+      --cream: #F8F3EE;       /* base surface */
+      --parchment: #EFE6DA;   /* elevated surface */
+      --linen: #FFFDF9;       /* floating surface */
+      --walnut: #5A3420;
+      --amber: #C98A3E;
+      --burgundy: #6B1E24;
+      --ink: #2B1A17;
+      --ink-soft: #6E5A52;
+
+      --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+      --font-body: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+
+      --space-section: clamp(4.5rem, 9vw, 8rem);
+      --space-gutter: 1rem;
+      --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+
+      --shadow-rest:
+        0 1px 2px rgba(43, 26, 23, .06),
+        0 10px 24px -12px rgba(90, 52, 32, .22);
+      --shadow-lift:
+        0 2px 4px rgba(43, 26, 23, .06),
+        0 18px 36px -14px rgba(90, 52, 32, .30),
+        0 30px 60px -30px rgba(107, 30, 36, .22);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) { --cream: #F8F3EE; }
+    }
+    :root[data-theme="dark"] { --cream: #F8F3EE; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 7rem; }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: 1.0625rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Grain layer across the whole page for depth */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: none;
+      opacity: .05;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.17  0 0 0 0 0.10  0 0 0 0 0.09  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    img { display: block; max-width: 100%; }
+
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      font-weight: 500;
+      color: var(--ink);
+      margin: 0;
+      line-height: 1.05;
+    }
+    h1, h2 { letter-spacing: -0.03em; }
+
+    .eyebrow {
+      font-size: .75rem;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: var(--burgundy);
+      font-weight: 400;
+    }
+
+    .container-wide {
+      width: min(100% - 2 * var(--space-gutter), 1200px);
+      margin-inline: auto;
+    }
+
+    .section { padding-block: var(--space-section); position: relative; }
+
+    /* ---------- Surfaces: base → elevated → floating ---------- */
+    .surface-elevated {
+      background: var(--parchment);
+      box-shadow: var(--shadow-rest);
+    }
+    .surface-floating {
+      background: var(--linen);
+      box-shadow: var(--shadow-lift);
+      border-radius: 4px;
+    }
+
+    /* ---------- Image treatment: gradient overlay + color layer ---------- */
+    .media {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      background: var(--parchment);
+      isolation: isolate;
+    }
+    .media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1);
+      transition: transform .9s var(--ease-spring);
+    }
+    .media::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(to top, rgba(0, 0, 0, .6), rgba(0, 0, 0, 0) 60%);
+      pointer-events: none;
+    }
+    .media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: var(--walnut);
+      mix-blend-mode: multiply;
+      opacity: .14;
+      pointer-events: none;
+    }
+    .media-link:hover img,
+    .media-link:focus-visible img { transform: scale(1.04); }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      position: relative;
+      isolation: isolate;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      padding: .95rem 1.7rem;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: .8125rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-weight: 400;
+      text-decoration: none;
+      color: var(--linen);
+      background: var(--walnut);
+      box-shadow: 0 2px 4px rgba(43, 26, 23, .12), 0 14px 28px -12px rgba(90, 52, 32, .55);
+      border: 0;
+      cursor: pointer;
+      transform: translateZ(0);
+      transition: transform .45s var(--ease-spring), opacity .3s ease;
+    }
+    /* Hover color shift is a fading layer, so only opacity/transform animate */
+    .btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      background: var(--burgundy);
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:hover::before { opacity: 1; }
+    .btn:active { transform: translateY(0) scale(.98); }
+    .btn:focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 3px;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--walnut);
+      box-shadow: inset 0 0 0 1px rgba(90, 52, 32, .35);
+    }
+    .btn-ghost::before { background: var(--parchment); }
+    .btn-ghost:hover { color: var(--walnut); }
+
+    .link-quiet {
+      position: relative;
+      display: inline-block;
+      color: var(--ink);
+      text-decoration: none;
+      padding: .25rem 0;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-size: .78rem;
+      font-weight: 400;
+    }
+    .link-quiet::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: -2px;
+      height: 1px;
+      background: var(--amber);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .5s var(--ease-spring);
+    }
+    .link-quiet:hover::after,
+    .link-quiet:focus-visible::after { transform: scaleX(1); }
+    .link-quiet:focus-visible { outline: 2px solid var(--amber); outline-offset: 4px; border-radius: 2px; }
+    .link-quiet:active { opacity: .7; }
+
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: var(--linen);
+      border-radius: 4px;
+      box-shadow: var(--shadow-rest);
+      transform: translateZ(0);
+      transition: transform .6s var(--ease-spring), opacity .4s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:hover { transform: translateY(-6px); }
+    .card:active { transform: translateY(-2px) scale(.99); }
+    .card:focus-visible { outline: 2px solid var(--amber); outline-offset: 4px; }
+
+    /* ---------- Header ---------- */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(248, 243, 238, .86);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 rgba(90, 52, 32, .12), 0 14px 30px -24px rgba(90, 52, 32, .5);
+    }
+    .logo-mark {
+      height: clamp(104px, 12vw, 136px);
+      width: auto;
+      mix-blend-mode: multiply;
+    }
+    .nav-link {
+      position: relative;
+      display: inline-block;
+      padding: .5rem .15rem;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: .78rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 1px;
+      background: var(--amber);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .5s var(--ease-spring);
+    }
+    .nav-link:hover::after,
+    .nav-link:focus-visible::after { transform: scaleX(1); }
+    .nav-link:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 2px; }
+    .nav-link:active { opacity: .7; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(60% 50% at 85% 10%, rgba(201, 138, 62, .22), transparent 70%),
+        radial-gradient(45% 45% at 5% 95%, rgba(107, 30, 36, .10), transparent 70%),
+        radial-gradient(80% 60% at 50% 0%, #FBF7F2, transparent 80%),
+        var(--cream);
+    }
+    .hero-title {
+      font-size: clamp(3rem, 7.2vw, 6.1rem);
+      letter-spacing: -0.03em;
+      line-height: .98;
+    }
+    .hero-title em { color: var(--burgundy); font-style: italic; font-weight: 400; }
+    .hero-media {
+      border-radius: 4px;
+      box-shadow: var(--shadow-lift);
+      aspect-ratio: 4 / 5;
+    }
+
+    .tagline {
+      letter-spacing: .42em;
+      text-transform: uppercase;
+      font-size: .72rem;
+      color: var(--ink-soft);
+    }
+
+    /* ---------- Feature icons ---------- */
+    .feature-ring {
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--linen);
+      box-shadow: var(--shadow-rest), inset 0 0 0 1px rgba(90, 52, 32, .18);
+      color: var(--walnut);
+    }
+    .feature-ring svg { width: 48px; height: 48px; }
+
+    /* ---------- Spec chips ---------- */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: .35rem .8rem;
+      border-radius: 999px;
+      background: var(--linen);
+      box-shadow: inset 0 0 0 1px rgba(90, 52, 32, .18);
+      font-size: .72rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--walnut);
+    }
+
+    /* ---------- Form ---------- */
+    .field {
+      width: 100%;
+      padding: .9rem 1rem;
+      border: 0;
+      border-radius: 4px;
+      background: var(--cream);
+      box-shadow: inset 0 0 0 1px rgba(90, 52, 32, .22);
+      font: inherit;
+      color: var(--ink);
+      transition: box-shadow .3s ease;
+    }
+    .field:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--amber); }
+    .field::placeholder { color: #A7968E; }
+
+    /* ---------- Motion: reveal (transform + opacity only) ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .9s ease, transform 1s var(--ease-spring);
+    }
+    .reveal.is-in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <div class="container-wide flex items-center justify-between gap-6 py-2">
+      <a href="#inicio" class="shrink-0 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C98A3E]" aria-label="BOGA LAMPS, ir al inicio">
+        <img class="logo-mark" src="brand_assets/BOGA%20LAMPS%20LOGO%20PNG%20(1).png" alt="BOGA LAMPS — Amor por los detalles" />
+      </a>
+
+      <nav aria-label="Principal" class="hidden md:flex items-center gap-8">
+        <a class="nav-link" href="#colecciones">Colecciones</a>
+        <a class="nav-link" href="#productos">Productos</a>
+        <a class="nav-link" href="#nosotros">Nosotros</a>
+        <a class="nav-link" href="#contacto">Contacto</a>
+      </nav>
+
+      <a class="btn" href="https://wa.me/520000000000?text=Hola%20BOGA%20LAMPS%2C%20quisiera%20informaci%C3%B3n" target="_blank" rel="noopener">
+        WhatsApp
+      </a>
+    </div>
+
+    <!-- Mobile nav: horizontal scroll row -->
+    <nav aria-label="Principal móvil" class="md:hidden border-t border-[rgba(90,52,32,.12)]">
+      <div class="container-wide flex gap-6 overflow-x-auto py-3" style="scrollbar-width:none">
+        <a class="nav-link" href="#colecciones">Colecciones</a>
+        <a class="nav-link" href="#productos">Productos</a>
+        <a class="nav-link" href="#nosotros">Nosotros</a>
+        <a class="nav-link" href="#contacto">Contacto</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section id="inicio" class="hero">
+      <div class="container-wide grid items-center gap-12 py-12 md:grid-cols-12 md:py-20">
+        <div class="md:col-span-6 lg:col-span-5 reveal">
+          <p class="eyebrow mb-6">Iluminación & decoración</p>
+          <h1 class="hero-title mb-7">
+            Luz cálida<br />para cada <em>rincón</em>
+          </h1>
+          <p class="max-w-md text-[1.1rem] text-[var(--ink-soft)] mb-10">
+            Lámparas para interiores y exteriores, piezas de madera y textiles
+            seleccionadas con cuidado para darle carácter a tu hogar.
+          </p>
+          <div class="flex flex-wrap items-center gap-4">
+            <a class="btn" href="#productos">Ver productos</a>
+            <a class="btn btn-ghost" href="#colecciones">Colecciones</a>
+          </div>
+        </div>
+
+        <div class="md:col-span-6 lg:col-span-6 lg:col-start-7 reveal">
+          <a class="media media-link hero-media block" href="#productos" aria-label="Ver lámpara SERT">
+            <img src="brand_assets/LM031T1.png" alt="Lámpara de mesa SERT de pantalla crema y base de madera, encendida sobre un mueble de nogal" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COLECCIONES ============ -->
+    <section id="colecciones" class="section">
+      <div class="container-wide">
+        <div class="max-w-xl mb-14 reveal">
+          <p class="eyebrow mb-4">Colecciones</p>
+          <h2 class="text-[clamp(2.2rem,4.5vw,3.4rem)]">Para dentro y para afuera</h2>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-3">
+          <a href="#productos" class="card reveal" aria-label="Colección interior">
+            <div class="media media-link aspect-[4/5] rounded-b-none">
+              <img src="brand_assets/LP008T1.png" alt="Lámpara de pie de madera con pantalla negra en sala" />
+            </div>
+            <div class="p-7">
+              <p class="eyebrow mb-3">Interior</p>
+              <h3 class="text-[1.9rem] mb-2">Lámparas de sala</h3>
+              <p class="text-[var(--ink-soft)]">Pie, mesa y pantallas de lino para una luz envolvente.</p>
+            </div>
+          </a>
+
+          <a href="#contacto" class="card reveal" aria-label="Colección exterior">
+            <div class="media media-link aspect-[4/5] rounded-b-none">
+              <img src="https://placehold.co/800x1000/EFE6DA/5A3420?text=Exterior" alt="Imagen de marcador: lámparas para exterior" />
+            </div>
+            <div class="p-7">
+              <p class="eyebrow mb-3">Exterior</p>
+              <h3 class="text-[1.9rem] mb-2">Iluminación exterior</h3>
+              <p class="text-[var(--ink-soft)]">Luz para jardines, terrazas y accesos.</p>
+            </div>
+          </a>
+
+          <a href="#contacto" class="card reveal" aria-label="Colección decoración">
+            <div class="media media-link aspect-[4/5] rounded-b-none">
+              <img src="https://placehold.co/800x1000/F8F3EE/6B1E24?text=Decoracion" alt="Imagen de marcador: piezas de decoración" />
+            </div>
+            <div class="p-7">
+              <p class="eyebrow mb-3">Decoración</p>
+              <h3 class="text-[1.9rem] mb-2">Décor de interiores</h3>
+              <p class="text-[var(--ink-soft)]">Objetos, textiles y detalles que completan el espacio.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRODUCTOS ============ -->
+    <section id="productos" class="section surface-elevated">
+      <div class="container-wide">
+        <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between mb-14 reveal">
+          <div class="max-w-xl">
+            <p class="eyebrow mb-4">Productos destacados</p>
+            <h2 class="text-[clamp(2.2rem,4.5vw,3.4rem)]">Piezas que se quedan contigo</h2>
+          </div>
+          <a class="link-quiet" href="#contacto">Pedir catálogo completo →</a>
+        </div>
+
+        <div class="grid gap-10 md:grid-cols-2">
+          <!-- Product 1: SERT -->
+          <article class="surface-floating p-5 md:p-6 reveal flex flex-col">
+            <div class="media media-link aspect-[4/3] rounded-[3px]">
+              <img src="brand_assets/LM031T3.png" alt="Ficha de producto SERT: lámpara de mesa de madera con pantalla crema" style="object-fit: contain; background: #F8F3EE" />
+            </div>
+            <div class="flex flex-col gap-4 pt-7 pb-2 px-2">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="eyebrow mb-2">Lámpara de mesa</p>
+                  <h3 class="text-[2.2rem]">SERT</h3>
+                </div>
+                <span class="chip shrink-0">73 cm</span>
+              </div>
+              <p class="text-[var(--ink-soft)]">
+                Pantalla de lino crema y base trípode de madera sólida. Luz cálida para mesas de noche, consolas y escritorios.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span class="chip">Madera sólida</span>
+                <span class="chip">Luz cálida</span>
+                <span class="chip">Talla única</span>
+              </div>
+              <a class="btn mt-3 self-start" href="https://wa.me/520000000000?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20la%20l%C3%A1mpara%20SERT" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+            </div>
+          </article>
+
+          <!-- Product 2: floor lamp -->
+          <article class="surface-floating p-5 md:p-6 reveal flex flex-col">
+            <div class="media media-link aspect-[4/3] rounded-[3px]">
+              <img src="brand_assets/LP008T4.png" alt="Lámpara de pie LP008 con pantalla negra y base de madera de nogal, en varias vistas" style="object-position: center 30%" />
+            </div>
+            <div class="flex flex-col gap-4 pt-7 pb-2 px-2">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="eyebrow mb-2">Lámpara de pie</p>
+                  <h3 class="text-[2.2rem]">LP008</h3>
+                </div>
+                <span class="chip shrink-0">Pantalla negra</span>
+              </div>
+              <p class="text-[var(--ink-soft)]">
+                Trípode de madera de nogal con pantalla de lino negro. Forma escultórica que aporta presencia a cualquier sala.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span class="chip">Madera de nogal</span>
+                <span class="chip">Lino</span>
+                <span class="chip">Pie</span>
+              </div>
+              <a class="btn mt-3 self-start" href="https://wa.me/520000000000?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20la%20l%C3%A1mpara%20LP008" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DETALLES ============ -->
+    <section class="section">
+      <div class="container-wide">
+        <div class="grid gap-12 md:grid-cols-2 md:items-center">
+          <div class="reveal">
+            <p class="eyebrow mb-4">Hecho con detalle</p>
+            <h2 class="text-[clamp(2.2rem,4.5vw,3.4rem)] mb-6">Materiales que se sienten</h2>
+            <p class="text-[var(--ink-soft)] mb-10 max-w-lg">
+              Maderas sólidas, lino natural y acabados pensados para envejecer bien.
+              Cada pieza se revisa antes de salir de nuestro taller.
+            </p>
+
+            <ul class="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4 md:grid-cols-2">
+              <li class="flex flex-col items-start gap-3">
+                <span class="feature-ring" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 12h16l6 12H10z"/><path d="M24 24v12"/><path d="M16 36h16"/><path d="M18 36l-3 6M30 36l3 6"/></svg>
+                </span>
+                <span class="text-[0.78rem] tracking-[.14em] uppercase">Lámpara de mesa</span>
+              </li>
+              <li class="flex flex-col items-start gap-3">
+                <span class="feature-ring" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8h16l4 8H12z"/><path d="M20 16l-2 22M28 16l2 22M24 16v22"/></svg>
+                </span>
+                <span class="text-[0.78rem] tracking-[.14em] uppercase">Talla única</span>
+              </li>
+              <li class="flex flex-col items-start gap-3">
+                <span class="feature-ring" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="16" width="32" height="16" rx="8"/><circle cx="16" cy="24" r="2"/><circle cx="24" cy="24" r="2"/><circle cx="32" cy="24" r="2"/></svg>
+                </span>
+                <span class="text-[0.78rem] tracking-[.14em] uppercase">Madera sólida</span>
+              </li>
+              <li class="flex flex-col items-start gap-3">
+                <span class="feature-ring" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 30v-4a6 6 0 1 1 12 0v4z"/><path d="M19 34h10"/><path d="M24 8v3M12 14l2 2M36 14l-2 2M8 24h3M37 24h3"/></svg>
+                </span>
+                <span class="text-[0.78rem] tracking-[.14em] uppercase">Luz cálida</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="reveal grid grid-cols-2 gap-4">
+            <div class="media aspect-[3/4] col-span-1">
+              <img src="brand_assets/LP008T1.png" alt="Detalle de lámpara de pie con pantalla de lino negro" style="object-position: 50% 40%" />
+            </div>
+            <div class="media aspect-[3/4] col-span-1 mt-10">
+              <img src="brand_assets/LM031T1.png" alt="Lámpara SERT sobre mueble de madera" style="object-position: 40% 50%" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ NOSOTROS ============ -->
+    <section id="nosotros" class="section surface-elevated">
+      <div class="container-wide grid gap-12 md:grid-cols-12 md:items-center">
+        <div class="md:col-span-5 flex justify-center reveal">
+          <img class="w-full max-w-md" style="mix-blend-mode:multiply" src="brand_assets/BOGA%20LAMPS%20LOGO%20PNG%20(1).png" alt="Logotipo de BOGA LAMPS" />
+        </div>
+        <div class="md:col-span-6 md:col-start-7 reveal">
+          <p class="eyebrow mb-4">Nosotros</p>
+          <h2 class="text-[clamp(2.2rem,4.5vw,3.4rem)] mb-6">Amor por los detalles</h2>
+          <p class="text-[var(--ink-soft)] mb-5">
+            BOGA LAMPS nace de una idea simple: la luz correcta cambia por completo un espacio.
+            Elegimos lámparas y piezas de decoración que combinan materiales naturales,
+            líneas limpias y una luz que invita a quedarse.
+          </p>
+          <p class="text-[var(--ink-soft)]">
+            Trabajamos para interiores y exteriores, y acompañamos a cada cliente para encontrar
+            la pieza que mejor se adapte a su casa, su proyecto o su negocio.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACTO ============ -->
+    <section id="contacto" class="section">
+      <div class="container-wide grid gap-12 md:grid-cols-12">
+        <div class="md:col-span-5 reveal">
+          <p class="eyebrow mb-4">Contacto</p>
+          <h2 class="text-[clamp(2.2rem,4.5vw,3.4rem)] mb-6">Hablemos de tu espacio</h2>
+          <p class="text-[var(--ink-soft)] mb-10">
+            Cuéntanos qué buscas y te respondemos con disponibilidad, medidas y opciones de compra.
+          </p>
+
+          <dl class="grid gap-6 text-[0.98rem]">
+            <div>
+              <dt class="eyebrow mb-1">WhatsApp</dt>
+              <dd><a class="link-quiet" href="https://wa.me/520000000000" target="_blank" rel="noopener">+52 000 000 0000</a></dd>
+            </div>
+            <div>
+              <dt class="eyebrow mb-1">Correo</dt>
+              <dd><a class="link-quiet" href="mailto:hola@bogalamps.com">hola@bogalamps.com</a></dd>
+            </div>
+            <div>
+              <dt class="eyebrow mb-1">Ubicación</dt>
+              <dd class="text-[var(--ink-soft)]">Dirección de tienda por confirmar</dd>
+            </div>
+          </dl>
+        </div>
+
+        <form class="md:col-span-6 md:col-start-7 surface-floating p-7 md:p-10 reveal" id="inquiry-form" novalidate>
+          <div class="grid gap-6">
+            <label class="grid gap-2">
+              <span class="eyebrow">Nombre</span>
+              <input class="field" name="name" type="text" autocomplete="name" required placeholder="Tu nombre" />
+            </label>
+            <label class="grid gap-2">
+              <span class="eyebrow">Correo o teléfono</span>
+              <input class="field" name="contact" type="text" autocomplete="email" required placeholder="Cómo te contactamos" />
+            </label>
+            <label class="grid gap-2">
+              <span class="eyebrow">Producto o proyecto</span>
+              <textarea class="field min-h-[7.5rem] resize-y" name="message" placeholder="Por ejemplo: lámpara de pie para sala, iluminación para terraza…"></textarea>
+            </label>
+            <div class="flex flex-wrap items-center gap-5 pt-2">
+              <button class="btn" type="submit">Enviar por WhatsApp</button>
+              <p class="text-sm text-[var(--ink-soft)]" id="form-status" role="status"></p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="surface-elevated">
+    <div class="container-wide py-12 flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+      <div class="flex items-center gap-5">
+        <img class="h-16 w-auto" style="mix-blend-mode:multiply" src="brand_assets/BOGA%20LAMPS%20LOGO%20PNG%20(1).png" alt="BOGA LAMPS" />
+      </div>
+      <nav aria-label="Pie de página" class="flex flex-wrap gap-x-8 gap-y-3">
+        <a class="link-quiet" href="#colecciones">Colecciones</a>
+        <a class="link-quiet" href="#productos">Productos</a>
+        <a class="link-quiet" href="#nosotros">Nosotros</a>
+        <a class="link-quiet" href="#contacto">Contacto</a>
+      </nav>
+      <p class="text-sm text-[var(--ink-soft)]">© 2026 BOGA LAMPS. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Reveal-on-scroll (transform + opacity only). Skipped when reduced motion is on.
+    (function () {
+      var items = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        items.forEach(function (el) { el.classList.add('is-in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+      items.forEach(function (el) { io.observe(el); });
+    })();
+
+    // Inquiry form: builds a prefilled WhatsApp message. Replace the number in one place when it's known.
+    (function () {
+      var WHATSAPP_NUMBER = '520000000000';
+      var form = document.getElementById('inquiry-form');
+      var status = document.getElementById('form-status');
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var data = new FormData(form);
+        var name = (data.get('name') || '').toString().trim();
+        var contact = (data.get('contact') || '').toString().trim();
+        var message = (data.get('message') || '').toString().trim();
+        if (!name || !contact) {
+          status.textContent = 'Por favor escribe tu nombre y cómo te contactamos.';
+          return;
+        }
+        var text = 'Hola BOGA LAMPS, soy ' + name + ' (' + contact + ').' + (message ? ' ' + message : '');
+        window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
+        status.textContent = 'Abrimos WhatsApp con tu mensaje listo.';
+      });
+    })();
+  </script>
+</body>
+</html>
