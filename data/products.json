@@ -1,0 +1,56 @@
+[
+  {
+    "id": "p_sert",
+    "name": "SERT",
+    "sku": "LM031",
+    "category": "Lámpara de mesa",
+    "collection": "interior",
+    "price": 0,
+    "stock": 1,
+    "badge": "73 cm",
+    "description": "Pantalla de lino crema y base trípode de madera sólida. Luz cálida para mesas de noche, consolas y escritorios.",
+    "tags": [
+      "Madera sólida",
+      "Luz cálida",
+      "Talla única"
+    ],
+    "images": [
+      "brand_assets/LM031T3.png",
+      "brand_assets/LM031T1.png",
+      "brand_assets/LM031T2.png",
+      "brand_assets/LM031T4.png"
+    ],
+    "imageAlt": "Ficha de producto SERT: lámpara de mesa de madera con pantalla crema",
+    "imageFit": "contain",
+    "featured": true,
+    "published": true,
+    "updatedAt": "2026-10-26T00:00:00.000Z"
+  },
+  {
+    "id": "p_lp008",
+    "name": "LP008",
+    "sku": "LP008",
+    "category": "Lámpara de pie",
+    "collection": "interior",
+    "price": 0,
+    "stock": 1,
+    "badge": "Pantalla negra",
+    "description": "Trípode de madera de nogal con pantalla de lino negro. Forma escultórica que aporta presencia a cualquier sala.",
+    "tags": [
+      "Madera de nogal",
+      "Lino",
+      "Pie"
+    ],
+    "images": [
+      "brand_assets/LP008T4.png",
+      "brand_assets/LP008T1.png",
+      "brand_assets/LP008T2.png",
+      "brand_assets/LP008T3.png"
+    ],
+    "imageAlt": "Lámpara de pie LP008 con pantalla negra y base de madera de nogal, en varias vistas",
+    "imageFit": "cover",
+    "featured": true,
+    "published": true,
+    "updatedAt": "2026-10-26T00:00:00.000Z"
+  }
+]

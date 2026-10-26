@@ -2,3 +2,6 @@ node_modules/
 temporary screenshots/
 audits/
 propuesta/
+# Orders hold customer names, phones and addresses: never publish them.
+data/orders.json
+data/*.tmp

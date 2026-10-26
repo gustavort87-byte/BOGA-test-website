@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BOGA LAMPS · Amor por los detalles</title>
   <meta name="description" content="Lámparas e iluminación para interiores y exteriores, y decoración con amor por los detalles." />
+  <script>
+    // Restore the visitor's day/night choice before first paint (set by the pull lamp).
+    try { if (localStorage.getItem('boga-theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,10 +41,44 @@
         0 30px 60px -30px rgba(107, 30, 36, .22);
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) { --cream: #F8F3EE; }
+    /* ---------- Night theme: switched by the pull lamp in Nosotros (palette from index-dusk.html) ---------- */
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --cream: #1C1411;
+      --parchment: #261B16;
+      --linen: #31241D;
+      --walnut: #D9A35B;
+      --amber: #E8BC7A;
+      --burgundy: #E6A57E;
+      --ink: #F3ECE3;
+      --ink-soft: #B9A898;
+      --shadow-rest:
+        0 1px 2px rgba(0, 0, 0, .3),
+        0 10px 24px -12px rgba(0, 0, 0, .6);
+      --shadow-lift:
+        0 2px 4px rgba(0, 0, 0, .3),
+        0 18px 36px -14px rgba(0, 0, 0, .65),
+        0 30px 60px -30px rgba(217, 163, 91, .18);
     }
-    :root[data-theme="dark"] { --cream: #F8F3EE; }
+    :root[data-theme="dark"] .site-header { box-shadow: 0 1px 0 rgba(243, 236, 227, .08), 0 14px 30px -24px rgba(0, 0, 0, .8); }
+    :root[data-theme="dark"] .site-header::before { background: rgba(28, 20, 17, .84); }
+    :root[data-theme="dark"] .hero {
+      background:
+        radial-gradient(60% 50% at 85% 10%, rgba(217, 163, 91, .16), transparent 70%),
+        radial-gradient(45% 45% at 5% 95%, rgba(107, 30, 36, .3), transparent 70%),
+        var(--cream);
+    }
+    :root[data-theme="dark"] .btn { box-shadow: 0 2px 4px rgba(0, 0, 0, .3), 0 14px 28px -12px rgba(217, 163, 91, .35); }
+    :root[data-theme="dark"] .btn-ghost { box-shadow: inset 0 0 0 1px rgba(217, 163, 91, .45); }
+    :root[data-theme="dark"] .chip { box-shadow: inset 0 0 0 1px rgba(217, 163, 91, .3); }
+    :root[data-theme="dark"] .feature-ring { box-shadow: var(--shadow-rest), inset 0 0 0 1px rgba(217, 163, 91, .3); }
+    :root[data-theme="dark"] .field { box-shadow: inset 0 0 0 1px rgba(243, 236, 227, .18); }
+    :root[data-theme="dark"] .field:focus-visible { box-shadow: inset 0 0 0 2px var(--amber); }
+    :root[data-theme="dark"] .field::placeholder { color: #8C7B70; }
+    /* images/boga-logo.png is the brand logo with its white background made transparent: invert it for night */
+    :root[data-theme="dark"] img[src*="boga-logo"] { filter: invert(1) hue-rotate(180deg); }
+    /* Theme switch crossfades (opacity only) where View Transitions are supported */
+    ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .5s; }
 
     *, *::before, *::after { box-sizing: border-box; }
 
@@ -240,15 +278,21 @@
       position: sticky;
       top: 0;
       z-index: 50;
+      box-shadow: 0 1px 0 rgba(90, 52, 32, .12), 0 14px 30px -24px rgba(90, 52, 32, .5);
+    }
+    /* Blur lives on a layer behind the content so the logo's blend mode can still see the header color */
+    .site-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
       background: rgba(248, 243, 238, .86);
       -webkit-backdrop-filter: blur(12px);
       backdrop-filter: blur(12px);
-      box-shadow: 0 1px 0 rgba(90, 52, 32, .12), 0 14px 30px -24px rgba(90, 52, 32, .5);
     }
     .logo-mark {
       height: clamp(104px, 12vw, 136px);
       width: auto;
-      mix-blend-mode: multiply;
     }
     .nav-link {
       position: relative;
@@ -347,6 +391,35 @@
     .field:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--amber); }
     .field::placeholder { color: #A7968E; }
 
+    /* ---------- Pull lamp (port of Ship Notes' MIT-licensed "Pull Lamp") ---------- */
+    .pull-lamp {
+      position: relative;
+      width: min(100%, 420px);
+      aspect-ratio: 480 / 560;
+      --light: 1;
+      isolation: isolate;
+    }
+    .pull-lamp svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    .pull-lamp .lit { opacity: var(--light); }
+    .pull-lamp .handle {
+      position: absolute;
+      left: calc(350 / 480 * 100%);
+      top: calc(332 / 560 * 100%);
+      width: 48px;
+      height: 48px;
+      transform: translate(-50%, -50%);
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      cursor: grab;
+      touch-action: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .pull-lamp .handle:hover { background: rgba(201, 138, 62, .12); }
+    .pull-lamp .handle:active { cursor: grabbing; background: rgba(201, 138, 62, .2); }
+    .pull-lamp .handle:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
     /* ---------- Motion: reveal (transform + opacity only) ---------- */
     .reveal {
       opacity: 0;
@@ -371,7 +444,7 @@
   <header class="site-header">
     <div class="container-wide flex items-center justify-between gap-6 py-2">
       <a href="#inicio" class="shrink-0 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C98A3E]" aria-label="BOGA LAMPS, ir al inicio">
-        <img class="logo-mark" src="brand_assets/BOGA%20LAMPS%20LOGO%20PNG%20(1).png" alt="BOGA LAMPS — Amor por los detalles" />
+        <img class="logo-mark" src="images/boga-logo.png" alt="BOGA LAMPS — Amor por los detalles" />
       </a>
 
       <nav aria-label="Principal" class="hidden md:flex items-center gap-8">
@@ -381,7 +454,7 @@
         <a class="nav-link" href="#contacto">Contacto</a>
       </nav>
 
-      <a class="btn" href="https://wa.me/520000000000?text=Hola%20BOGA%20LAMPS%2C%20quisiera%20informaci%C3%B3n" target="_blank" rel="noopener">
+      <a class="btn" data-wa="Hola BOGA LAMPS, quisiera información" href="https://wa.me/520000000000?text=Hola%20BOGA%20LAMPS%2C%20quisiera%20informaci%C3%B3n" target="_blank" rel="noopener">
         WhatsApp
       </a>
     </div>
@@ -481,56 +554,11 @@
           <a class="link-quiet" href="#contacto">Pedir catálogo completo →</a>
         </div>
 
-        <div class="grid gap-10 md:grid-cols-2">
-          <!-- Product 1: SERT -->
-          <article class="surface-floating p-5 md:p-6 reveal flex flex-col">
-            <div class="media media-link aspect-[4/3] rounded-[3px]">
-              <img src="brand_assets/LM031T3.png" alt="Ficha de producto SERT: lámpara de mesa de madera con pantalla crema" style="object-fit: contain; background: #F8F3EE" />
-            </div>
-            <div class="flex flex-col gap-4 pt-7 pb-2 px-2">
-              <div class="flex items-start justify-between gap-4">
-                <div>
-                  <p class="eyebrow mb-2">Lámpara de mesa</p>
-                  <h3 class="text-[2.2rem]">SERT</h3>
-                </div>
-                <span class="chip shrink-0">73 cm</span>
-              </div>
-              <p class="text-[var(--ink-soft)]">
-                Pantalla de lino crema y base trípode de madera sólida. Luz cálida para mesas de noche, consolas y escritorios.
-              </p>
-              <div class="flex flex-wrap gap-2">
-                <span class="chip">Madera sólida</span>
-                <span class="chip">Luz cálida</span>
-                <span class="chip">Talla única</span>
-              </div>
-              <a class="btn mt-3 self-start" href="https://wa.me/520000000000?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20la%20l%C3%A1mpara%20SERT" target="_blank" rel="noopener">Consultar por WhatsApp</a>
-            </div>
-          </article>
-
-          <!-- Product 2: floor lamp -->
-          <article class="surface-floating p-5 md:p-6 reveal flex flex-col">
-            <div class="media media-link aspect-[4/3] rounded-[3px]">
-              <img src="brand_assets/LP008T4.png" alt="Lámpara de pie LP008 con pantalla negra y base de madera de nogal, en varias vistas" style="object-position: center 30%" />
-            </div>
-            <div class="flex flex-col gap-4 pt-7 pb-2 px-2">
-              <div class="flex items-start justify-between gap-4">
-                <div>
-                  <p class="eyebrow mb-2">Lámpara de pie</p>
-                  <h3 class="text-[2.2rem]">LP008</h3>
-                </div>
-                <span class="chip shrink-0">Pantalla negra</span>
-              </div>
-              <p class="text-[var(--ink-soft)]">
-                Trípode de madera de nogal con pantalla de lino negro. Forma escultórica que aporta presencia a cualquier sala.
-              </p>
-              <div class="flex flex-wrap gap-2">
-                <span class="chip">Madera de nogal</span>
-                <span class="chip">Lino</span>
-                <span class="chip">Pie</span>
-              </div>
-              <a class="btn mt-3 self-start" href="https://wa.me/520000000000?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20la%20l%C3%A1mpara%20LP008" target="_blank" rel="noopener">Consultar por WhatsApp</a>
-            </div>
-          </article>
+        <!-- Filled from data/products.json (managed in the admin: node admin.mjs) -->
+        <div class="grid gap-10 md:grid-cols-2" id="product-grid"></div>
+        <noscript>
+          <p class="text-[var(--ink-soft)]">Activa JavaScript para ver los productos, o <a class="link-quiet" href="https://wa.me/520000000000">escríbenos por WhatsApp</a>.</p>
+        </noscript>
         </div>
       </div>
     </section>
@@ -590,8 +618,113 @@
     <!-- ============ NOSOTROS ============ -->
     <section id="nosotros" class="section surface-elevated">
       <div class="container-wide grid gap-12 md:grid-cols-12 md:items-center">
-        <div class="md:col-span-5 flex justify-center reveal">
-          <img class="w-full max-w-md" style="mix-blend-mode:multiply" src="brand_assets/BOGA%20LAMPS%20LOGO%20PNG%20(1).png" alt="Logotipo de BOGA LAMPS" />
+        <div class="md:col-span-5 flex flex-col items-center gap-2 reveal">
+          <!-- Pull lamp: drag the cord to switch the page between day and night -->
+          <div class="pull-lamp" id="pull-lamp">
+            <svg viewBox="0 0 480 560" aria-hidden="true">
+              <!-- Drawn after BOGA's own SERT lamp: cream linen drum shade on a walnut tripod -->
+              <defs>
+                <linearGradient id="pl-metal">
+                  <stop stop-color="#4a3826" />
+                  <stop offset=".25" stop-color="#bf9c62" />
+                  <stop offset=".45" stop-color="#ffe4a5" />
+                  <stop offset=".6" stop-color="#a27d47" />
+                  <stop offset="1" stop-color="#49331f" />
+                </linearGradient>
+                <linearGradient id="pl-linen">
+                  <stop stop-color="#B9A88F" />
+                  <stop offset=".3" stop-color="#E9DECB" />
+                  <stop offset=".42" stop-color="#F3EBDD" />
+                  <stop offset=".75" stop-color="#DCCDB5" />
+                  <stop offset="1" stop-color="#A8957A" />
+                </linearGradient>
+                <radialGradient id="pl-glow" cx=".5" cy=".62" r=".7">
+                  <stop stop-color="#FFFDF6" />
+                  <stop offset=".6" stop-color="#FFF2D8" />
+                  <stop offset="1" stop-color="#F0D3A4" />
+                </radialGradient>
+                <linearGradient id="pl-lining" x1="0" y1="0" x2="0" y2="1">
+                  <stop stop-color="#8F7C64" />
+                  <stop offset="1" stop-color="#C9B89E" />
+                </linearGradient>
+                <linearGradient id="pl-wood" x1="0" y1="0" x2="1" y2="0">
+                  <stop stop-color="#3B2216" />
+                  <stop offset=".35" stop-color="#8A5530" />
+                  <stop offset=".55" stop-color="#A86B3D" />
+                  <stop offset="1" stop-color="#4A2A19" />
+                </linearGradient>
+                <linearGradient id="pl-wood-back" x1="0" y1="0" x2="1" y2="0">
+                  <stop stop-color="#2A170F" />
+                  <stop offset=".5" stop-color="#5E3820" />
+                  <stop offset="1" stop-color="#2A170F" />
+                </linearGradient>
+                <pattern id="pl-weave" width="5" height="5" patternUnits="userSpaceOnUse">
+                  <path d="M0 0V5" stroke="#5A3420" stroke-opacity=".07" stroke-width="1" />
+                  <path d="M0 2.5H5" stroke="#5A3420" stroke-opacity=".04" stroke-width="1" />
+                </pattern>
+                <linearGradient id="pl-beam" x1="0" y1="0" x2="0" y2="1">
+                  <stop stop-color="#ffd892" stop-opacity=".26" />
+                  <stop offset="1" stop-color="#ffd892" stop-opacity="0" />
+                </linearGradient>
+                <radialGradient id="pl-pool">
+                  <stop stop-color="#ffd997" stop-opacity=".6" />
+                  <stop offset=".55" stop-color="#ffd28a" stop-opacity=".17" />
+                  <stop offset="1" stop-color="#ffd28a" stop-opacity="0" />
+                </radialGradient>
+                <radialGradient id="pl-shadow">
+                  <stop stop-color="#000" stop-opacity=".45" />
+                  <stop offset="1" stop-color="#000" stop-opacity="0" />
+                </radialGradient>
+                <filter id="pl-soft"><feGaussianBlur stdDeviation="11" /></filter>
+              </defs>
+
+              <!-- Floor shadow and light -->
+              <ellipse cx="240" cy="494" rx="160" ry="20" fill="url(#pl-shadow)" />
+              <g class="lit">
+                <path d="M120 230 14 490 Q240 548 466 490L360 230Z" fill="url(#pl-beam)" />
+                <ellipse cx="240" cy="490" rx="222" ry="56" fill="url(#pl-pool)" />
+                <ellipse cx="240" cy="62" rx="104" ry="22" fill="#ffd892" opacity=".35" filter="url(#pl-soft)" />
+              </g>
+
+              <!-- Power cable -->
+              <path d="M246 466 Q330 486 456 476" fill="none" stroke="#1E1410" stroke-width="3.5" stroke-linecap="round" />
+
+              <!-- Tripod of square walnut legs meeting right under the shade -->
+              <path d="M238 228 L248 228 L251 468 L243 468Z" fill="url(#pl-wood-back)" />
+              <path d="M232 226 L246 230 L166 492 L150 490Z" fill="url(#pl-wood)" />
+              <path d="M234 226 L240 228 L156 491 L150 490Z" fill="#2E1A10" opacity=".35" />
+              <path d="M234 230 L248 226 L330 490 L314 492Z" fill="url(#pl-wood)" />
+              <path d="M246 228 L248 226 L330 490 L326 491Z" fill="#2E1A10" opacity=".35" />
+              <path d="M239 236 L162 478" stroke="#E0A86E" stroke-opacity=".3" stroke-width="1.2" />
+              <path d="M243 236 L320 478" stroke="#E0A86E" stroke-opacity=".22" stroke-width="1.2" />
+              <ellipse cx="158" cy="491" rx="10" ry="3" fill="#1E1410" />
+              <ellipse cx="322" cy="491" rx="10" ry="3" fill="#1E1410" />
+
+              <!-- Pull chain: hangs from inside the shade, so it's drawn before the shade -->
+              <path data-cord d="M350 226Q350 274 350 329" fill="none" stroke="url(#pl-metal)" stroke-width="2.5" />
+              <path data-beads d="M350 226Q350 274 350 329" fill="none" stroke="#e5ca97" stroke-width="3.3" stroke-linecap="round" stroke-dasharray=".1 5.5" />
+              <g data-knob>
+                <ellipse cx="350" cy="332" rx="6" ry="9" fill="url(#pl-wood)" />
+                <ellipse cx="348.5" cy="329" rx="1.3" ry="3.5" fill="#F1C99A" opacity=".6" />
+              </g>
+
+              <!-- Light spilling under the shade -->
+              <ellipse class="lit" cx="240" cy="236" rx="124" ry="18" fill="#ffcf77" filter="url(#pl-soft)" />
+
+              <!-- Straight linen drum shade, seen almost at eye level -->
+              <path d="M118 66 A122 8 0 0 1 362 66 L362 226 A122 12 0 0 1 118 226 Z" fill="url(#pl-linen)" />
+              <path d="M118 66 A122 8 0 0 1 362 66 L362 226 A122 12 0 0 1 118 226 Z" fill="url(#pl-weave)" />
+              <path class="lit" d="M118 66 A122 8 0 0 1 362 66 L362 226 A122 12 0 0 1 118 226 Z" fill="url(#pl-glow)" opacity=".94" />
+              <ellipse cx="240" cy="66" rx="122" ry="8" fill="url(#pl-lining)" />
+              <ellipse class="lit" cx="240" cy="66" rx="122" ry="8" fill="#FFF3D2" />
+              <path class="lit" d="M120 226 A120 11 0 0 0 360 226" fill="none" stroke="#FFF6DD" stroke-width="3" />
+              <path d="M118 66 A122 8 0 0 0 362 66" fill="none" stroke="#7A6A55" stroke-opacity=".45" stroke-width="2" />
+              <path d="M118 226 A122 12 0 0 0 362 226" fill="none" stroke="#7A6A55" stroke-opacity=".45" stroke-width="2" />
+            </svg>
+            <button class="handle" type="button" aria-label="Encender la luz" aria-pressed="true" aria-describedby="pull-lamp-hint"></button>
+            <span class="sr-only" id="pull-lamp-hint">Jala el cordón hacia abajo, o presiona Enter o Espacio, para cambiar entre modo día y modo noche.</span>
+          </div>
+          <p class="text-sm text-[var(--ink-soft)]" id="pull-lamp-caption">Jala el cordón para apagar la luz.</p>
         </div>
         <div class="md:col-span-6 md:col-start-7 reveal">
           <p class="eyebrow mb-4">Nosotros</p>
@@ -622,7 +755,7 @@
           <dl class="grid gap-6 text-[0.98rem]">
             <div>
               <dt class="eyebrow mb-1">WhatsApp</dt>
-              <dd><a class="link-quiet" href="https://wa.me/520000000000" target="_blank" rel="noopener">+52 000 000 0000</a></dd>
+              <dd><a class="link-quiet" data-wa="" data-wa-label href="https://wa.me/520000000000" target="_blank" rel="noopener">+52 000 000 0000</a></dd>
             </div>
             <div>
               <dt class="eyebrow mb-1">Correo</dt>
@@ -663,7 +796,7 @@
   <footer class="surface-elevated">
     <div class="container-wide py-12 flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
       <div class="flex items-center gap-5">
-        <img class="h-16 w-auto" style="mix-blend-mode:multiply" src="brand_assets/BOGA%20LAMPS%20LOGO%20PNG%20(1).png" alt="BOGA LAMPS" />
+        <img class="h-16 w-auto" src="images/boga-logo.png" alt="BOGA LAMPS" />
       </div>
       <nav aria-label="Pie de página" class="flex flex-wrap gap-x-8 gap-y-3">
         <a class="link-quiet" href="#colecciones">Colecciones</a>
@@ -691,9 +824,205 @@
       items.forEach(function (el) { io.observe(el); });
     })();
 
-    // Inquiry form: builds a prefilled WhatsApp message. Replace the number in one place when it's known.
+    // Shop data: products and settings come from data/*.json, edited in the admin (node admin.mjs).
+    var WHATSAPP_NUMBER = '520000000000';
+
+    function waLink(text) {
+      return 'https://wa.me/' + WHATSAPP_NUMBER + (text ? '?text=' + encodeURIComponent(text) : '');
+    }
+
     (function () {
-      var WHATSAPP_NUMBER = '520000000000';
+      var grid = document.getElementById('product-grid');
+      var money = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
+      function esc(v) {
+        return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+      function getJson(path) {
+        return fetch(path, { cache: 'no-cache' }).then(function (r) {
+          if (!r.ok) throw new Error(path);
+          return r.json();
+        });
+      }
+
+      function card(p, showPrices) {
+        var soldOut = p.stock === 0;
+        var img = p.images[0]
+          ? '<div class="media media-link aspect-[4/3] rounded-[3px]"><img src="' + esc(encodeURI(p.images[0])) + '" alt="' + esc(p.imageAlt || p.category + ' ' + p.name) + '" loading="lazy"' +
+            (p.imageFit === 'contain' ? ' style="object-fit: contain; background: #F8F3EE"' : '') + ' /></div>'
+          : '';
+        var price = showPrices && p.price > 0
+          ? '<p class="text-[1.15rem] text-[var(--walnut)]" style="font-weight:400">' + money.format(p.price) + '</p>'
+          : '';
+        var chips = p.tags.map(function (t) { return '<span class="chip">' + esc(t) + '</span>'; }).join('');
+        var ask = soldOut
+          ? 'Hola, quisiera saber cuándo vuelve a estar disponible ' + p.name
+          : 'Hola, quisiera información sobre ' + (p.category ? p.category.toLowerCase() + ' ' : '') + p.name;
+        return '<article class="surface-floating p-5 md:p-6 reveal flex flex-col">' + img +
+          '<div class="flex flex-col gap-4 pt-7 pb-2 px-2">' +
+            '<div class="flex items-start justify-between gap-4"><div>' +
+              (p.category ? '<p class="eyebrow mb-2">' + esc(p.category) + '</p>' : '') +
+              '<h3 class="text-[2.2rem]">' + esc(p.name) + '</h3></div>' +
+              (soldOut ? '<span class="chip shrink-0">Agotado</span>' : p.badge ? '<span class="chip shrink-0">' + esc(p.badge) + '</span>' : '') +
+            '</div>' + price +
+            (p.description ? '<p class="text-[var(--ink-soft)]">' + esc(p.description) + '</p>' : '') +
+            (chips ? '<div class="flex flex-wrap gap-2">' + chips + '</div>' : '') +
+            '<a class="btn mt-3 self-start" href="' + esc(waLink(ask)) + '" target="_blank" rel="noopener">' +
+              (soldOut ? 'Preguntar disponibilidad' : 'Consultar por WhatsApp') + '</a>' +
+          '</div></article>';
+      }
+
+      Promise.all([getJson('data/settings.json'), getJson('data/products.json')]).then(function (res) {
+        var settings = res[0];
+        if (settings.whatsappNumber) WHATSAPP_NUMBER = settings.whatsappNumber;
+
+        document.querySelectorAll('[data-wa]').forEach(function (a) {
+          a.href = waLink(a.getAttribute('data-wa'));
+          if (a.hasAttribute('data-wa-label')) {
+            var n = WHATSAPP_NUMBER;
+            a.textContent = n.length === 12 ? '+' + n.slice(0, 2) + ' ' + n.slice(2, 5) + ' ' + n.slice(5, 8) + ' ' + n.slice(8) : '+' + n;
+          }
+        });
+
+        var featured = res[1].filter(function (p) { return p.published && p.featured; });
+        grid.innerHTML = featured.map(function (p) { return card(p, settings.showPrices); }).join('');
+        requestAnimationFrame(function () {
+          grid.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-in'); });
+        });
+      }).catch(function () {
+        grid.innerHTML = '<p class="text-[var(--ink-soft)]">No pudimos cargar los productos. <a class="link-quiet" href="' + waLink('') + '" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>.</p>';
+      });
+    })();
+
+    // Pull lamp: drag the cord (or press Enter/Space on it) to switch between day and night.
+    // Ported from Ship Notes' "Pull Lamp" web component, MIT License, (c) 2026 Ship Notes:
+    // https://github.com/aqualang89/shipnotes-components
+    (function () {
+      var root = document.getElementById('pull-lamp');
+      if (!root) return;
+      var html = document.documentElement;
+      var button = root.querySelector('.handle');
+      var cord = root.querySelector('[data-cord]');
+      var beads = root.querySelector('[data-beads]');
+      var knob = root.querySelector('[data-knob]');
+      var caption = document.getElementById('pull-lamp-caption');
+      var media = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      var isOn = html.getAttribute('data-theme') !== 'dark';
+      var pull = 0, sway = 0, velocity = 0, sideVelocity = 0;
+      var light = isOn ? 1 : 0, last = 0, frame = 0, drag = null, moved = 0;
+
+      function pose(p, s, l) {
+        root.style.setProperty('--light', String(Math.max(0, Math.min(1, l))));
+        var x = 350 + s;
+        var y = 329 + p;
+        var d = 'M350 226 Q' + (350 + s * 0.22) + ' ' + (277 + p * 0.45) + ' ' + x + ' ' + y;
+        cord.setAttribute('d', d);
+        beads.setAttribute('d', d);
+        knob.setAttribute('transform', 'translate(' + s + ' ' + p + ')');
+        button.style.left = (x / 480) * 100 + '%';
+        button.style.top = ((y + 3) / 560) * 100 + '%';
+      }
+
+      function updateLabel() {
+        button.setAttribute('aria-pressed', String(isOn));
+        caption.textContent = isOn ? 'Jala el cordón para apagar la luz.' : 'Jala el cordón para encender la luz.';
+      }
+
+      function setTheme(theme) {
+        var apply = function () { html.setAttribute('data-theme', theme); };
+        if (document.startViewTransition && !media.matches) document.startViewTransition(apply).ready.catch(function () {});
+        else apply();
+        try { localStorage.setItem('boga-theme', theme); } catch (e) {}
+      }
+
+      function tick(now) {
+        var dt = last ? Math.min((now - last) / 1000, 0.025) : 0.016;
+        last = now;
+        if (!drag) {
+          velocity += (-pull * 220 - velocity * 19) * dt;
+          pull += velocity * dt;
+          sideVelocity += (-sway * 100 - sideVelocity * 9) * dt;
+          sway += sideVelocity * dt;
+        }
+        var target = isOn ? 1 : 0;
+        light += (target - light) * (1 - Math.exp(-dt * 9));
+        pose(pull, sway, light);
+        if (Math.abs(pull) + Math.abs(velocity) + Math.abs(sway) + Math.abs(sideVelocity) + Math.abs(target - light) > 0.015 || drag) {
+          frame = requestAnimationFrame(tick);
+        } else {
+          frame = 0;
+          pose(0, 0, target);
+        }
+      }
+
+      function animate() {
+        if (media.matches) {
+          pull = sway = 0;
+          light = isOn ? 1 : 0;
+          pose(0, 0, light);
+          return;
+        }
+        if (!frame) {
+          last = 0;
+          frame = requestAnimationFrame(tick);
+        }
+      }
+
+      function toggle() {
+        isOn = !isOn;
+        updateLabel();
+        setTheme(isOn ? 'light' : 'dark');
+        animate();
+      }
+
+      function release(e, cancelled) {
+        if (!drag || e.pointerId !== drag.id) return;
+        var doToggle = !cancelled && (pull > 16 || moved < 5);
+        drag = null;
+        if (button.hasPointerCapture(e.pointerId)) button.releasePointerCapture(e.pointerId);
+        if (doToggle) toggle();
+        animate();
+      }
+
+      media.addEventListener('change', function () {
+        if (!media.matches) return;
+        cancelAnimationFrame(frame);
+        frame = 0;
+        pull = sway = velocity = sideVelocity = 0;
+        light = isOn ? 1 : 0;
+        pose(0, 0, light);
+      });
+
+      button.addEventListener('pointerdown', function (e) {
+        if (e.button !== 0) return;
+        var rect = root.getBoundingClientRect();
+        drag = { id: e.pointerId, x: e.clientX, y: e.clientY, scale: 480 / rect.width };
+        button.setPointerCapture(e.pointerId);
+        moved = 0;
+      });
+      button.addEventListener('pointermove', function (e) {
+        if (!drag || e.pointerId !== drag.id) return;
+        var dx = (e.clientX - drag.x) * drag.scale;
+        var dy = (e.clientY - drag.y) * drag.scale;
+        moved = Math.max(moved, Math.hypot(dx, dy));
+        pull = Math.max(0, Math.min(65, dy));
+        sway = Math.max(-24, Math.min(24, dx));
+        pose(pull, sway, light);
+      });
+      button.addEventListener('pointerup', function (e) { release(e, false); });
+      button.addEventListener('pointercancel', function (e) { release(e, true); });
+      button.addEventListener('lostpointercapture', function (e) { if (drag) release(e, true); });
+      // Keyboard activation (Enter/Space) arrives as a click with detail 0; pointer clicks are handled above.
+      button.addEventListener('click', function (e) { if (e.detail === 0) toggle(); });
+
+      updateLabel();
+      pose(0, 0, light);
+    })();
+
+    // Inquiry form: builds a prefilled WhatsApp message.
+    (function () {
       var form = document.getElementById('inquiry-form');
       var status = document.getElementById('form-status');
       form.addEventListener('submit', function (event) {
@@ -707,7 +1036,7 @@
           return;
         }
         var text = 'Hola BOGA LAMPS, soy ' + name + ' (' + contact + ').' + (message ? ' ' + message : '');
-        window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
+        window.open(waLink(text), '_blank', 'noopener');
         status.textContent = 'Abrimos WhatsApp con tu mensaje listo.';
       });
     })();

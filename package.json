@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "site": "node serve.mjs",
+    "admin": "node admin.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
