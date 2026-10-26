@@ -20,7 +20,7 @@ const files = {
 const defaults = {
   products: [],
   orders: [],
-  settings: { whatsappNumber: '520000000000', showPrices: false },
+  settings: { whatsappNumber: '524446000621', showPrices: false },
 };
 
 const types = {

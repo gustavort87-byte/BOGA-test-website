@@ -454,7 +454,7 @@
         <a class="nav-link" href="#contacto">Contacto</a>
       </nav>
 
-      <a class="btn" data-wa="Hola BOGA LAMPS, quisiera información" href="https://wa.me/520000000000?text=Hola%20BOGA%20LAMPS%2C%20quisiera%20informaci%C3%B3n" target="_blank" rel="noopener">
+      <a class="btn" data-wa="Hola Boga Lamps! Quisiera información" href="https://wa.me/524446000621?text=Hola%20Boga%20Lamps!%20Quisiera%20informaci%C3%B3n" target="_blank" rel="noopener">
         WhatsApp
       </a>
     </div>
@@ -557,7 +557,7 @@
         <!-- Filled from data/products.json (managed in the admin: node admin.mjs) -->
         <div class="grid gap-10 md:grid-cols-2" id="product-grid"></div>
         <noscript>
-          <p class="text-[var(--ink-soft)]">Activa JavaScript para ver los productos, o <a class="link-quiet" href="https://wa.me/520000000000">escríbenos por WhatsApp</a>.</p>
+          <p class="text-[var(--ink-soft)]">Activa JavaScript para ver los productos, o <a class="link-quiet" href="https://wa.me/524446000621">escríbenos por WhatsApp</a>.</p>
         </noscript>
         </div>
       </div>
@@ -755,7 +755,7 @@
           <dl class="grid gap-6 text-[0.98rem]">
             <div>
               <dt class="eyebrow mb-1">WhatsApp</dt>
-              <dd><a class="link-quiet" data-wa="" data-wa-label href="https://wa.me/520000000000" target="_blank" rel="noopener">+52 000 000 0000</a></dd>
+              <dd><a class="link-quiet" data-wa="" data-wa-label href="https://wa.me/524446000621" target="_blank" rel="noopener">+52 444 600 0621</a></dd>
             </div>
             <div>
               <dt class="eyebrow mb-1">Correo</dt>
@@ -825,7 +825,7 @@
     })();
 
     // Shop data: products and settings come from data/*.json, edited in the admin (node admin.mjs).
-    var WHATSAPP_NUMBER = '520000000000';
+    var WHATSAPP_NUMBER = '524446000621';
 
     function waLink(text) {
       return 'https://wa.me/' + WHATSAPP_NUMBER + (text ? '?text=' + encodeURIComponent(text) : '');
@@ -856,9 +856,7 @@
           ? '<p class="text-[1.15rem] text-[var(--walnut)]" style="font-weight:400">' + money.format(p.price) + '</p>'
           : '';
         var chips = p.tags.map(function (t) { return '<span class="chip">' + esc(t) + '</span>'; }).join('');
-        var ask = soldOut
-          ? 'Hola, quisiera saber cuándo vuelve a estar disponible ' + p.name
-          : 'Hola, quisiera información sobre ' + (p.category ? p.category.toLowerCase() + ' ' : '') + p.name;
+        var ask = 'Hola Boga Lamps! Quisiera información sobre el modelo: ' + p.name;
         return '<article class="surface-floating p-5 md:p-6 reveal flex flex-col">' + img +
           '<div class="flex flex-col gap-4 pt-7 pb-2 px-2">' +
             '<div class="flex items-start justify-between gap-4"><div>' +
